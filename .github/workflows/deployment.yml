@@ -1,6 +1,8 @@
 name: CD
 on:
     workflow_dispatch:
+env:
+  MESSAGE: 'this is a message!'
 jobs:
     Info:
         runs-on: windows-2022
@@ -11,56 +13,59 @@ jobs:
             - name: check github.event.ref
               run: echo "${{ github.event.ref }}"
 
-    Build:
-        needs: Info
-        runs-on: windows-2022
-        steps:
-            - uses: actions/checkout@v4
+            - name: show message
+              run: echo "${{ env.MESSAGE }}"
 
-            - name: Setup MSBuild
-              uses: microsoft/setup-msbuild@v2
+    # Build:
+    #     needs: Info
+    #     runs-on: windows-2022
+    #     steps:
+    #         - uses: actions/checkout@v4
 
-            - name: Setup NuGet
-              uses: nuget/setup-nuget@v2
+    #         - name: Setup MSBuild
+    #           uses: microsoft/setup-msbuild@v2
 
-            - name: Navigate to Workspace
-              run: cd $GITHUB_WORKSPACE
+    #         - name: Setup NuGet
+    #           uses: nuget/setup-nuget@v2
 
-            - name: Create Build Directory
-              run: mkdir ./_build
+    #         - name: Navigate to Workspace
+    #           run: cd $GITHUB_WORKSPACE
 
-            - name: Restore Packages
-              run: nuget restore aws_demos_netframework.sln
+    #         - name: Create Build Directory
+    #           run: mkdir ./_build
 
-            - name: Build solution
-              run: |
-                msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build
+    #         - name: Restore Packages
+    #           run: nuget restore aws_demos_netframework.sln
 
-            - name: Upload artifact
-              uses: actions/upload-artifact@v4
-              with:
-                name: deployment-package
-                path: "./_build"
+    #         - name: Build solution
+    #           run: |
+    #             msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build
 
-    DeployStaging:
-        name: Deploy to Staging
-        if: github.event_name == 'workflow_dispatch' && github.event.ref == 'refs/heads/main'
-        needs: Build
-        runs-on: windows-2022
-        environment:
-            name: STAGING
-            url: 'http://mvc-demo-netframework-env-staging.eba-vu2rymzm.us-east-2.elasticbeanstalk.com'
-        steps:
-            - name: Deploy
-              run: echo I am deploying to staging!
+    #         - name: Upload artifact
+    #           uses: actions/upload-artifact@v4
+    #           with:
+    #             name: deployment-package
+    #             path: "./_build"
 
-    DeployQA:
-        name: Deploy to QA
-        needs: DeployStaging
-        runs-on: windows-2022
-        environment:
-            name: QA
-            url: 'http://mvc-demo-netframework-env-qa.eba-vu2rymzm.us-east-2.elasticbeanstalk.com'
-        steps:
-            - name: Deploy
-              run: echo I am deploying to qa!
+    # DeployStaging:
+    #     name: Deploy to Staging
+    #     if: github.event_name == 'workflow_dispatch' && github.event.ref == 'refs/heads/main'
+    #     needs: Build
+    #     runs-on: windows-2022
+    #     environment:
+    #         name: STAGING
+    #         url: 'http://mvc-demo-netframework-env-staging.eba-vu2rymzm.us-east-2.elasticbeanstalk.com'
+    #     steps:
+    #         - name: Deploy
+    #           run: echo I am deploying to staging!
+
+    # DeployQA:
+    #     name: Deploy to QA
+    #     needs: DeployStaging
+    #     runs-on: windows-2022
+    #     environment:
+    #         name: QA
+    #         url: 'http://mvc-demo-netframework-env-qa.eba-vu2rymzm.us-east-2.elasticbeanstalk.com'
+    #     steps:
+    #         - name: Deploy
+    #           run: echo I am deploying to qa!
