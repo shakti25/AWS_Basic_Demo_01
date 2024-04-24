@@ -42,7 +42,7 @@ jobs:
 
             - name: list src directory
               run: |
-                ls ./src/MVC_Demo_01
+                ls ./src/MVC_Demo_01/_build2
 
             # - name: access new directory
             #   run: |
