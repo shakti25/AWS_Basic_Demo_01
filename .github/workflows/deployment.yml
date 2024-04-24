@@ -12,16 +12,16 @@ jobs:
               run: echo "${{ github.event.ref }}"
 
             - name: Create Directory
-              run: mkdir _build2
+              run: mkdir ~/_build2
 
             - name: Access Directory and create file
               run: |
-                ls
-                cd _build2
-                echo First > other.txt
-
-            - name: List Directory
-              run: ls
+                ls -la ~/
+                mkdir ~/_build2
+                echo First        > ~/_build2/home.txt
+                echo Second Line >> ~/_build2/home.txt
+                echo Third       >> ~/_build2/home.txt
+                ls -la ~/_build2/
 
     # Build:
     #     needs: Info
