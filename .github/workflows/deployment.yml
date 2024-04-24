@@ -34,7 +34,7 @@ jobs:
 
             - name: Build solution
               run: |
-                msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=./_build2
+                msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build2
 
             - name: list directory
               run: |
@@ -42,7 +42,7 @@ jobs:
 
             - name: list src directory
               run: |
-                ls ./src/MVC_Demo_01/_build2
+                ls ./_build
 
             # - name: access new directory
             #   run: |
