@@ -34,7 +34,7 @@ jobs:
 
             - name: Build solution
               run: |
-                msbuild aws_demos_netframework.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
+                msbuild aws_demos_netframework.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:OutputPath="../_build"
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
