@@ -17,7 +17,6 @@ jobs:
             - name: Access Directory and create file
               run: |
                 ls -Force ~/
-                mkdir ~/_build2
                 echo First        > ~/_build2/home.txt
                 echo Second Line >> ~/_build2/home.txt
                 echo Third       >> ~/_build2/home.txt
