@@ -1,0 +1,12 @@
+name: Deployment Workflow
+on:
+    workflow_dispatch:
+jobs:
+    info:
+        runs-on: windows-2022
+        steps:
+            - name: check github.event_name
+              run: echo "${{ github.event_name }}"
+
+            - name: check github.event.ref
+              run: echo "${{ github.event.ref }}"
