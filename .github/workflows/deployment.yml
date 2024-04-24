@@ -16,12 +16,12 @@ jobs:
 
             - name: Access Directory and create file
               run: |
-                ls -la ~/
+                ls -Force ~/
                 mkdir ~/_build2
                 echo First        > ~/_build2/home.txt
                 echo Second Line >> ~/_build2/home.txt
                 echo Third       >> ~/_build2/home.txt
-                ls -la ~/_build2/
+                ls -Force ~/_build2/
 
     # Build:
     #     needs: Info
