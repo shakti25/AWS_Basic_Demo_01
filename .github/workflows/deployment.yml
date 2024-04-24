@@ -36,11 +36,15 @@ jobs:
               run: |
                 msbuild aws_demos_netframework.sln -t:rebuild -property:Configuration=Release -property:OutputPath=../_build
 
-            - name: Upload artifact
-              uses: actions/upload-artifact@v4
-              with:
-                name: deployment-package
-                path: "./_build"
+            - name: list
+              run: |
+                   ls
+
+            # - name: Upload artifact
+            #   uses: actions/upload-artifact@v4
+            #   with:
+            #     name: deployment-package
+            #     path: "./_build"
 
     DeployStaging:
         name: Deploy to Staging
