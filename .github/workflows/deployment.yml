@@ -23,11 +23,24 @@ jobs:
             - name: Setup NuGet
               uses: nuget/setup-nuget@v2
 
+            - name: Navigate to Workspace
+              run: cd $GITHUB_WORKSPACE
+
+            - name: Create Build Directory
+              run: mkdir _build
+
             - name: Restore Packages
               run: nuget restore aws_demos_netframework.sln
 
             - name: Build solution
-              run: msbuild aws_demos_netframework.sln -t:rebuild -property:Configuration=Release
+              run: |
+                msbuild aws_demos_netframework.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: deployment-package
+                path: "./_build"
 
     DeployStaging:
         name: Deploy to Staging
