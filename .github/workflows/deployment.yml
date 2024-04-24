@@ -40,9 +40,9 @@ jobs:
               run: |
                 ls
 
-            - name: list directory
+            - name: list src directory
               run: |
-                ls \src\
+                ls ./src
 
             # - name: access new directory
             #   run: |
