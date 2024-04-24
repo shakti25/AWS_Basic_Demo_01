@@ -45,7 +45,7 @@ jobs:
 
             - name: Build solution
               run: |
-                msbuild aws_demos_netframework.sln -t:rebuild -property:Configuration=Release -property:OutputPath=./_build
+                msbuild aws_demos_netframework.sln -t:rebuild -property:Configuration=Release -property:OutputPath=../_build
 
             - name: list directory
               run: |
@@ -53,7 +53,7 @@ jobs:
 
             - name: access new directory
               run: |
-                ls -Force ~/_build/
+                ls -Force ~/_build
 
             # - name: Upload artifact
             #   uses: actions/upload-artifact@v4
