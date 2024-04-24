@@ -11,6 +11,14 @@ jobs:
             - name: check github.event.ref
               run: echo "${{ github.event.ref }}"
 
+            - name: Create Directory
+              run: mkdir _build2
+
+            - name: Access Directory
+              run: |
+                cd _build2
+                ls
+
     Build:
         needs: Info
         runs-on: windows-2022
@@ -42,7 +50,7 @@ jobs:
 
             - name: list 2
               run: |
-                   cd './_build'
+                   cd '.\_build'
 
             # - name: Upload artifact
             #   uses: actions/upload-artifact@v4
