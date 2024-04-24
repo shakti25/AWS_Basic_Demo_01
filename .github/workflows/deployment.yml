@@ -37,8 +37,8 @@ jobs:
             - name: Navigate to Workspace
               run: cd $GITHUB_WORKSPACE
 
-            - name: Create Build Directory
-              run: mkdir ~/_build
+            # - name: Create Build Directory
+            #   run: mkdir ./_build
 
             - name: Restore Packages
               run: nuget restore aws_demos_netframework.sln
@@ -49,11 +49,11 @@ jobs:
 
             - name: list directory
               run: |
-                ls -Force ~/
+                ls
 
-            - name: access new directory
-              run: |
-                ls -Force ~/_build
+            # - name: access new directory
+            #   run: |
+            #     ls -Force ~/_build
 
             # - name: Upload artifact
             #   uses: actions/upload-artifact@v4
