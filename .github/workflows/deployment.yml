@@ -45,7 +45,7 @@ jobs:
 
             - name: Build solution
               run: |
-                msbuild aws_demos_netframework.sln /t:Build -/p:Configuration=Release
+                msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release
 
             - name: list directory
               run: |
