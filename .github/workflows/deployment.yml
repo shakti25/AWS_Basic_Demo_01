@@ -11,17 +11,6 @@ jobs:
             - name: check github.event.ref
               run: echo "${{ github.event.ref }}"
 
-            - name: Create Directory
-              run: mkdir ~/_build2
-
-            - name: Access Directory and create file
-              run: |
-                ls -Force ~/
-                echo First        > ~/_build2/home.txt
-                echo Second Line >> ~/_build2/home.txt
-                echo Third       >> ~/_build2/home.txt
-                ls -Force ~/_build2/
-
     Build:
         needs: Info
         runs-on: windows-2022
@@ -50,6 +39,10 @@ jobs:
             - name: list directory
               run: |
                 ls
+
+            - name: list directory
+              run: |
+                ls \src\
 
             # - name: access new directory
             #   run: |
