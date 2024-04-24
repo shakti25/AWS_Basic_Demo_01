@@ -14,43 +14,39 @@ jobs:
             - name: Create Directory
               run: mkdir _build2
 
-            - name: Access Directory
+            - name: Access Directory and create file
               run: |
-                cd _build2
                 ls
+                cd _build2
+                echo First > other.txt
 
-    Build:
-        needs: Info
-        runs-on: windows-2022
-        steps:
-            - uses: actions/checkout@v4
+            - name: List Directory
+              run: ls
 
-            - name: Setup MSBuild
-              uses: microsoft/setup-msbuild@v2
+    # Build:
+    #     needs: Info
+    #     runs-on: windows-2022
+    #     steps:
+    #         - uses: actions/checkout@v4
 
-            - name: Setup NuGet
-              uses: nuget/setup-nuget@v2
+    #         - name: Setup MSBuild
+    #           uses: microsoft/setup-msbuild@v2
 
-            - name: Navigate to Workspace
-              run: cd $GITHUB_WORKSPACE
+    #         - name: Setup NuGet
+    #           uses: nuget/setup-nuget@v2
 
-            - name: Create Build Directory
-              run: mkdir _build
+    #         - name: Navigate to Workspace
+    #           run: cd $GITHUB_WORKSPACE
 
-            - name: Restore Packages
-              run: nuget restore aws_demos_netframework.sln
+    #         - name: Create Build Directory
+    #           run: mkdir _build
 
-            - name: Build solution
-              run: |
-                msbuild aws_demos_netframework.sln -t:rebuild -property:Configuration=Release -property:OutputPath=./_build
+    #         - name: Restore Packages
+    #           run: nuget restore aws_demos_netframework.sln
 
-            - name: list
-              run: |
-                   ls
-
-            - name: list 2
-              run: |
-                   cd '.\_build'
+    #         - name: Build solution
+    #           run: |
+    #             msbuild aws_demos_netframework.sln -t:rebuild -property:Configuration=Release -property:OutputPath=./_build
 
             # - name: Upload artifact
             #   uses: actions/upload-artifact@v4
