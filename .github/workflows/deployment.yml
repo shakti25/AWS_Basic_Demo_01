@@ -1,8 +1,8 @@
-name: Deployment Workflow
+name: CD
 on:
     workflow_dispatch:
 jobs:
-    info:
+    Info:
         runs-on: windows-2022
         steps:
             - name: check github.event_name
@@ -10,3 +10,38 @@ jobs:
 
             - name: check github.event.ref
               run: echo "${{ github.event.ref }}"
+
+    Build:
+        needs: Info
+        runs-on: windows-2022
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup MSBuild
+              uses: microsoft/setup-msbuild@v2
+
+            - name: Setup NuGet
+              uses: nuget/setup-nuget@v2
+
+            - name: Restore Packages
+              run: nuget restore aws_demos_netframework.sln
+
+            - name: Build solution
+              run: msbuild aws_demos_netframework.sln -t:rebuild -property:Configuration=Release
+
+    DeployStaging:
+        name: Deploy to Staging
+        if: github.event_name == 'workflow_dispatch' && github.event.ref == 'refs/heads/main'
+        needs: Build
+        runs-on: windows-2022
+        steps:
+            - name: Deploy
+              run: echo I am deploying to staging!
+
+    DeployQA:
+        name: Deploy to QA
+        needs: DeployStaging
+        runs-on: windows-2022
+        steps:
+            - name: Deploy
+              run: echo I am deploying to qa!
