@@ -2,7 +2,10 @@ name: CD
 on:
     workflow_dispatch:
 env:
-  MESSAGE: 'this is a message!'
+  SLN_NAME: 'aws_demos_netframework.sln'
+  SLN_OUTPUT_PATH: '../../_build'
+  BUILD_FOLDER_PATH_AND_NAME: './_build'
+  ARTIFACT_NAME: 'deployment-package'
 jobs:
     Info:
         runs-on: windows-2022
@@ -13,39 +16,41 @@ jobs:
             - name: check github.event.ref
               run: echo "${{ github.event.ref }}"
 
-            - name: show message
-              run: echo "${{ env.MESSAGE }}"
+    Build:
+        needs: Info
+        runs-on: windows-2022
+        steps:
+            - uses: actions/checkout@v4
 
-    # Build:
-    #     needs: Info
-    #     runs-on: windows-2022
-    #     steps:
-    #         - uses: actions/checkout@v4
+            - name: Setup MSBuild
+              uses: microsoft/setup-msbuild@v2
 
-    #         - name: Setup MSBuild
-    #           uses: microsoft/setup-msbuild@v2
+            - name: Setup NuGet
+              uses: nuget/setup-nuget@v2
 
-    #         - name: Setup NuGet
-    #           uses: nuget/setup-nuget@v2
+            - name: Navigate to Workspace
+              run: cd $GITHUB_WORKSPACE
 
-    #         - name: Navigate to Workspace
-    #           run: cd $GITHUB_WORKSPACE
+            - name: Create Build Directory
+              # run: mkdir ./_build
+              run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
 
-    #         - name: Create Build Directory
-    #           run: mkdir ./_build
+            - name: Restore Packages
+              # run: nuget restore aws_demos_netframework.sln
+              run: nuget restore ${{ env.SLN_NAME }}
 
-    #         - name: Restore Packages
-    #           run: nuget restore aws_demos_netframework.sln
+            - name: Build solution
+              # run: |
+              #   msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build
+              run: |
+                # msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
 
-    #         - name: Build solution
-    #           run: |
-    #             msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build
-
-    #         - name: Upload artifact
-    #           uses: actions/upload-artifact@v4
-    #           with:
-    #             name: deployment-package
-    #             path: "./_build"
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: ${{ env.ARTIFACT_NAME }}
+                # path: "./_build"
+                path: ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
 
     # DeployStaging:
     #     name: Deploy to Staging
