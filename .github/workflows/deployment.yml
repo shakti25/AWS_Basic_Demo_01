@@ -40,8 +40,6 @@ jobs:
             - name: Build solution
               run: |
                 msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
-              # run: |
-              #   # msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=../../_build
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
