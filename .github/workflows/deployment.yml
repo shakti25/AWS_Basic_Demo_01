@@ -40,10 +40,10 @@ jobs:
               run: nuget restore ${{ env.SLN_NAME }}
 
             - name: Build solution
-              # run: |
-              #   msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build
               run: |
-                # msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=../../_build
+                msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build
+              # run: |
+              #   # msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=../../_build
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
