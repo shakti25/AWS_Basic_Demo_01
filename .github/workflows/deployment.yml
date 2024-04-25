@@ -19,56 +19,64 @@ jobs:
             - name: check github.event.ref
               run: echo "${{ github.event.ref }}"
 
-    Build:
-        needs: Info
-        runs-on: windows-2022
-        steps:
-            - uses: actions/checkout@v4
+            - name: Get github sha
+              run: ${{ github.sha }}
 
-            - name: Setup MSBuild
-              uses: microsoft/setup-msbuild@v2
+    # Build:
+    #     needs: Info
+    #     runs-on: windows-2022
+    #     steps:
+    #         - uses: actions/checkout@v4
 
-            - name: Setup NuGet
-              uses: nuget/setup-nuget@v2
+    #         - name: Setup MSBuild
+    #           uses: microsoft/setup-msbuild@v2
 
-            - name: Navigate to Workspace
-              run: cd $GITHUB_WORKSPACE
+    #         - name: Setup NuGet
+    #           uses: nuget/setup-nuget@v2
 
-            - name: Create Build Directory
-              run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
+    #         - name: Navigate to Workspace
+    #           run: cd $GITHUB_WORKSPACE
 
-            - name: Restore Packages
-              run: nuget restore ${{ env.SLN_NAME }}
+    #         - name: Create Build Directory
+    #           run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
 
-            - name: Build solution
-              run: |
-                msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
+    #         - name: Restore Packages
+    #           run: nuget restore ${{ env.SLN_NAME }}
 
-            - name: Upload artifact
-              uses: actions/upload-artifact@v4
-              with:
-                name: ${{ env.ARTIFACT_NAME }}
-                path: "${{ env.BUILD_FOLDER_PATH_AND_NAME }}"
+    #         - name: Build solution
+    #           run: |
+    #             msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
 
-    DeployStaging:
-        name: Deploy to Staging
-        if: github.event_name == 'workflow_dispatch' && github.event.ref == 'refs/heads/main'
-        needs: Build
-        runs-on: windows-2022
-        environment:
-            name: STAGING
-            url: ${{ env.ENV_STG_URL }}
-        steps:
-            - name: Deploy
-              run: echo I am deploying to staging!
+    #         - name: Upload artifact
+    #           uses: actions/upload-artifact@v4
+    #           with:
+    #             name: ${{ env.ARTIFACT_NAME }}
+    #             path: "${{ env.BUILD_FOLDER_PATH_AND_NAME }}"
 
-    DeployQA:
-        name: Deploy to QA
-        needs: DeployStaging
-        runs-on: windows-2022
-        environment:
-            name: QA
-            url: ${{ env.ENV_QA_URL }}
-        steps:
-            - name: Deploy
-              run: echo I am deploying to qa!
+    # DeployStaging:
+    #     name: Deploy to Staging
+    #     if: github.event_name == 'workflow_dispatch' && github.event.ref == 'refs/heads/main'
+    #     needs: Build
+    #     runs-on: windows-2022
+    #     environment:
+    #         name: STAGING
+    #         url: ${{ env.ENV_STG_URL }}
+    #     steps:
+    #         - name: Download Artifacts
+    #           uses: actions/download-artifact@v4
+    #           with:
+    #               name: ${{ env.ARTIFACT_NAME }}
+
+    #         - name: Deploy
+    #           run: echo I am deploying to staging!
+
+    # DeployQA:
+    #     name: Deploy to QA
+    #     needs: DeployStaging
+    #     runs-on: windows-2022
+    #     environment:
+    #         name: QA
+    #         url: ${{ env.ENV_QA_URL }}
+    #     steps:
+    #         - name: Deploy
+    #           run: echo I am deploying to qa!
