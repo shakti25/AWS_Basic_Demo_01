@@ -32,8 +32,8 @@ jobs:
               run: cd $GITHUB_WORKSPACE
 
             - name: Create Build Directory
-              # run: mkdir ./_build
-              run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
+              run: mkdir ./_build
+              # run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
 
             - name: Restore Packages
               # run: nuget restore aws_demos_netframework.sln
