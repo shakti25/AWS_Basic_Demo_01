@@ -1,4 +1,4 @@
-name: CD
+name: CD - AWS BEANSTALK
 on:
     workflow_dispatch:
 env:
@@ -6,6 +6,9 @@ env:
   SLN_OUTPUT_PATH: ../../_build
   BUILD_FOLDER_PATH_AND_NAME: './_build'
   ARTIFACT_NAME: 'deployment-package'
+
+  ENV_STG_URL: 'http://mvc-demo-netframework-env-staging.eba-vu2rymzm.us-east-2.elasticbeanstalk.com'
+  ENV_QA_URL: 'http://mvc-demo-netframework-env-qa.eba-vu2rymzm.us-east-2.elasticbeanstalk.com'
 jobs:
     Info:
         runs-on: windows-2022
@@ -47,25 +50,25 @@ jobs:
                 name: ${{ env.ARTIFACT_NAME }}
                 path: "${{ env.BUILD_FOLDER_PATH_AND_NAME }}"
 
-    # DeployStaging:
-    #     name: Deploy to Staging
-    #     if: github.event_name == 'workflow_dispatch' && github.event.ref == 'refs/heads/main'
-    #     needs: Build
-    #     runs-on: windows-2022
-    #     environment:
-    #         name: STAGING
-    #         url: 'http://mvc-demo-netframework-env-staging.eba-vu2rymzm.us-east-2.elasticbeanstalk.com'
-    #     steps:
-    #         - name: Deploy
-    #           run: echo I am deploying to staging!
+    DeployStaging:
+        name: Deploy to Staging
+        if: github.event_name == 'workflow_dispatch' && github.event.ref == 'refs/heads/main'
+        needs: Build
+        runs-on: windows-2022
+        environment:
+            name: STAGING
+            url: ${{ env.ENV_STG_URL }}
+        steps:
+            - name: Deploy
+              run: echo I am deploying to staging!
 
-    # DeployQA:
-    #     name: Deploy to QA
-    #     needs: DeployStaging
-    #     runs-on: windows-2022
-    #     environment:
-    #         name: QA
-    #         url: 'http://mvc-demo-netframework-env-qa.eba-vu2rymzm.us-east-2.elasticbeanstalk.com'
-    #     steps:
-    #         - name: Deploy
-    #           run: echo I am deploying to qa!
+    DeployQA:
+        name: Deploy to QA
+        needs: DeployStaging
+        runs-on: windows-2022
+        environment:
+            name: QA
+            url: ${{ env.ENV_QA_URL }}
+        steps:
+            - name: Deploy
+              run: echo I am deploying to qa!
