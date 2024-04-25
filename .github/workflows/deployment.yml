@@ -20,7 +20,7 @@ jobs:
               run: echo "${{ github.event.ref }}"
 
             - name: Get github sha
-              run: ${{ github.sha }}
+              run: echo "${{ github.sha }}"
 
     # Build:
     #     needs: Info
