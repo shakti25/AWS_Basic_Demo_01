@@ -29,7 +29,7 @@ jobs:
                 format: YYYYMMDDHHmmss
 
             - name: Use current time
-              run: echo "v${{ steps.current-time.outputs.time }}"
+              run: echo "v${{ steps.current-time.outputs.formattedTime }}"
 
     # Build:
     #     needs: Info
