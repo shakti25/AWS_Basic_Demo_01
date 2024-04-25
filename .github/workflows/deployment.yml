@@ -32,25 +32,25 @@ jobs:
               run: cd $GITHUB_WORKSPACE
 
             - name: Create Build Directory
-              # run: mkdir ./_build
-              run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
+              run: mkdir ./_build
+              # run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
 
             - name: Restore Packages
-              # run: nuget restore aws_demos_netframework.sln
-              run: nuget restore ${{ env.SLN_NAME }}
+              run: nuget restore aws_demos_netframework.sln
+              # run: nuget restore ${{ env.SLN_NAME }}
 
             - name: Build solution
-              # run: |
-              #   msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build
               run: |
-                # msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
+                msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build
+              # run: |
+              #   # msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
                 name: ${{ env.ARTIFACT_NAME }}
-                # path: "./_build"
-                path: ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
+                path: "./_build"
+                # path: "${{ env.BUILD_FOLDER_PATH_AND_NAME }}"
 
     # DeployStaging:
     #     name: Deploy to Staging
