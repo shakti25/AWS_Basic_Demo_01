@@ -39,7 +39,7 @@ jobs:
 
             - name: Build solution
               run: |
-                msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
+                msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
               # run: |
               #   # msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=../../_build
 
