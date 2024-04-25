@@ -26,11 +26,10 @@ jobs:
               uses: josStorer/get-current-time@v2
               id: current-time
               with:
-                format: YYYYMMDD-HH
-                utcOffset: "+08:00"
+                format: YYYYMMDDHHmmss
 
             - name: Use current time
-              run: echo "${{ steps.current-time.outputs }}"
+              run: echo "v${{ steps.current-time.outputs.time }}"
 
     # Build:
     #     needs: Info
