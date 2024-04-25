@@ -31,36 +31,39 @@ jobs:
             - name: Use current time
               run: echo "v${{ steps.current-time.outputs.formattedTime }}"
 
-    # Build:
-    #     needs: Info
-    #     runs-on: windows-2022
-    #     steps:
-    #         - uses: actions/checkout@v4
+    Build:
+        needs: Info
+        runs-on: windows-2022
+        steps:
+            - uses: actions/checkout@v4
 
-    #         - name: Setup MSBuild
-    #           uses: microsoft/setup-msbuild@v2
+            - name: Setup MSBuild
+              uses: microsoft/setup-msbuild@v2
 
-    #         - name: Setup NuGet
-    #           uses: nuget/setup-nuget@v2
+            - name: Setup NuGet
+              uses: nuget/setup-nuget@v2
 
-    #         - name: Navigate to Workspace
-    #           run: cd $GITHUB_WORKSPACE
+            - name: Navigate to Workspace
+              run: cd $GITHUB_WORKSPACE
 
-    #         - name: Create Build Directory
-    #           run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
+            - name: Create Build Directory
+              run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
 
-    #         - name: Restore Packages
-    #           run: nuget restore ${{ env.SLN_NAME }}
+            - name: Restore Packages
+              run: nuget restore ${{ env.SLN_NAME }}
 
-    #         - name: Build solution
-    #           run: |
-    #             msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
+            - name: Build solution
+              run: |
+                msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
 
-    #         - name: Upload artifact
-    #           uses: actions/upload-artifact@v4
-    #           with:
-    #             name: ${{ env.ARTIFACT_NAME }}
-    #             path: "${{ env.BUILD_FOLDER_PATH_AND_NAME }}"
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: ${{ env.ARTIFACT_NAME }}
+                path: "${{ env.BUILD_FOLDER_PATH_AND_NAME }}"
+
+            - name: Generate Deployment Package
+              run: zip -r deploy.zip .
 
     # DeployStaging:
     #     name: Deploy to Staging
