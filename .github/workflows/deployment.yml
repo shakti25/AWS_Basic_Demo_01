@@ -22,6 +22,16 @@ jobs:
             - name: Get github sha
               run: echo "${{ github.sha }}"
 
+            - name: Get current time
+              uses: josStorer/get-current-time@v2
+              id: current-time
+              with:
+                format: YYYYMMDD-HH
+                utcOffset: "+08:00"
+
+            - name: Use current time
+              run: echo "${{ steps.current-time.outputs }}"
+
     # Build:
     #     needs: Info
     #     runs-on: windows-2022
