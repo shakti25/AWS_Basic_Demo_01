@@ -3,7 +3,7 @@ on:
     workflow_dispatch:
 env:
   SLN_NAME: aws_demos_netframework.sln
-  SLN_OUTPUT_PATH: '../../_build'
+  SLN_OUTPUT_PATH: ../../_build
   BUILD_FOLDER_PATH_AND_NAME: './_build'
   ARTIFACT_NAME: 'deployment-package'
 jobs:
@@ -32,16 +32,14 @@ jobs:
               run: cd $GITHUB_WORKSPACE
 
             - name: Create Build Directory
-              # run: mkdir ./_build
               run: mkdir ${{ env.BUILD_FOLDER_PATH_AND_NAME }}
 
             - name: Restore Packages
-              # run: nuget restore aws_demos_netframework.sln
               run: nuget restore ${{ env.SLN_NAME }}
 
             - name: Build solution
               run: |
-                msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=../../_build
+                msbuild aws_demos_netframework.sln /t:Build /p:Configuration=Release /p:OutputPath=${{ env.SLN_OUTPUT_PATH }}
               # run: |
               #   # msbuild ${{ env.SLN_NAME }} /t:Build /p:Configuration=Release /p:OutputPath=../../_build
 
@@ -49,7 +47,6 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: ${{ env.ARTIFACT_NAME }}
-                # path: "./_build"
                 path: "${{ env.BUILD_FOLDER_PATH_AND_NAME }}"
 
     # DeployStaging:
