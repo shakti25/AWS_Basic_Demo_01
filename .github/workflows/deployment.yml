@@ -2,7 +2,7 @@ name: CD
 on:
     workflow_dispatch:
 env:
-  SLN_NAME: 'aws_demos_netframework.sln'
+  SLN_NAME: aws_demos_netframework.sln
   SLN_OUTPUT_PATH: '../../_build'
   BUILD_FOLDER_PATH_AND_NAME: './_build'
   ARTIFACT_NAME: 'deployment-package'
